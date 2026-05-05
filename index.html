@@ -8,8 +8,8 @@
   <style>
     body {
       margin: 0;
-      font-family: "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #0A0F1C, #05070d);
+      font-family: "Inter", sans-serif;
+      background: radial-gradient(circle at 20% 20%, #0f172a, #020617);
       color: #E5E7EB;
       display: flex;
       justify-content: center;
@@ -18,52 +18,61 @@
     }
 
     .card {
-      background: rgba(17, 24, 39, 0.8);
-      backdrop-filter: blur(10px);
-      padding: 25px;
+      background: rgba(17, 24, 39, 0.6);
+      backdrop-filter: blur(20px);
+      padding: 28px;
       border-radius: 20px;
-      width: 320px;
+      width: 340px;
       text-align: center;
-      border: 1px solid #1F2937;
-      box-shadow: 0 0 40px rgba(0, 82, 255, 0.25);
-      transition: 0.3s;
+      border: 1px solid rgba(255,255,255,0.05);
+      box-shadow:
+        0 10px 30px rgba(0,0,0,0.5),
+        0 0 40px rgba(0, 82, 255, 0.15);
+      transition: all 0.3s ease;
     }
 
     .card:hover {
-      box-shadow: 0 0 60px rgba(0, 82, 255, 0.4);
+      transform: translateY(-4px);
+      box-shadow:
+        0 20px 40px rgba(0,0,0,0.6),
+        0 0 60px rgba(0, 82, 255, 0.25);
     }
 
     h1 {
-      margin-bottom: 10px;
-      font-size: 26px;
+      margin-bottom: 12px;
+      font-size: 24px;
+      font-weight: 600;
     }
 
     .pot {
-      font-size: 32px;
-      font-weight: bold;
-      margin: 10px 0;
-      color: #3B82F6;
+      font-size: 36px;
+      font-weight: 700;
+      margin: 12px 0;
+      background: linear-gradient(90deg, #3B82F6, #60A5FA);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .info {
       color: #9CA3AF;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
+      font-size: 14px;
     }
 
     input {
       width: 100%;
       padding: 12px;
       border-radius: 12px;
-      border: 1px solid #1F2937;
+      border: 1px solid rgba(255,255,255,0.08);
       margin-bottom: 15px;
-      background: #0A0F1C;
+      background: rgba(0,0,0,0.3);
       color: white;
       outline: none;
     }
 
     input:focus {
-      border-color: #0052FF;
-      box-shadow: 0 0 10px rgba(0, 82, 255, 0.5);
+      border-color: #3B82F6;
+      box-shadow: 0 0 12px rgba(59,130,246,0.4);
     }
 
     button {
@@ -71,4 +80,96 @@
       padding: 12px;
       border-radius: 12px;
       border: none;
-      background: linear-gradient(135deg, #0052FF, #3
+      background: linear-gradient(135deg, #0052FF, #3B82F6);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px) scale(1.02);
+      box-shadow: 0 10px 25px rgba(59,130,246,0.5);
+    }
+
+    .winners {
+      margin-top: 20px;
+      text-align: left;
+      font-size: 13px;
+      max-height: 120px;
+      overflow: hidden;
+    }
+
+    .winner {
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <h1>🔵 BasePot</h1>
+
+    <div class="pot" id="pot">12.48 ETH</div>
+    <div class="info" id="timer">⏳ Ends in 02:00:00 • 👥 184 Players</div>
+
+    <input type="text" placeholder="Enter amount (ETH)" />
+    <button>Enter Pool</button>
+
+    <div class="winners" id="winners">
+      <div class="winner">0xA3F...91C won 3.2 ETH 🎉</div>
+      <div class="winner">0x91B...2F1 won 1.1 ETH 🎉</div>
+    </div>
+  </div>
+
+<script>
+  let time = 7200;
+
+  function updateTimer() {
+    let h = String(Math.floor(time / 3600)).padStart(2,'0');
+    let m = String(Math.floor((time % 3600) / 60)).padStart(2,'0');
+    let s = String(time % 60).padStart(2,'0');
+
+    document.getElementById("timer").innerText =
+      `⏳ Ends in ${h}:${m}:${s} • 👥 ${Math.floor(Math.random()*50+150)} Players`;
+
+    time--;
+    if(time < 0) time = 7200;
+  }
+
+  setInterval(updateTimer, 1000);
+
+  let pot = 12.48;
+
+  function animatePot() {
+    pot += Math.random() * 0.03;
+    document.getElementById("pot").innerText = pot.toFixed(2) + " ETH";
+  }
+
+  setInterval(animatePot, 2000);
+
+  function randomWallet() {
+    return "0x" + Math.random().toString(16).substr(2,4) + "..." + Math.random().toString(16).substr(2,3);
+  }
+
+  function addWinner() {
+    const winners = document.getElementById("winners");
+    const div = document.createElement("div");
+
+    div.className = "winner";
+    div.innerText = `${randomWallet()} won ${(Math.random()*3).toFixed(2)} ETH 🎉`;
+
+    winners.prepend(div);
+
+    if (winners.children.length > 6) {
+      winners.removeChild(winners.lastChild);
+    }
+  }
+
+  setInterval(addWinner, 4000);
+</script>
+
+</body>
+</html>
