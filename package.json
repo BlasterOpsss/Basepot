@@ -1,0 +1,17 @@
+{
+  "name": "rugpot-buy-bot",
+  "version": "1.0.0",
+  "description": "Automated buy bot for RugPot on Solana",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js",
+    "dev": "node --watch bot.js"
+  },
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.30.1",
+    "@solana/web3.js": "^1.95.3",
+    "bs58": "^5.0.0",
+    "dotenv": "^16.4.5"
+  }
+}
+
